@@ -1,4 +1,5 @@
 let ui = SpreadsheetApp.getUi();
+let doc = SpreadsheetApp.getActiveSpreadsheet();
 
 const onOpen = () => {
 	ui.createMenu("지오유")
@@ -14,12 +15,18 @@ const onOpen = () => {
 
 const eSign = () => {
 	ui.alert("본 문서를 전자결재로 상신합니다.");
+	let url = doc.getUrl().replace('/edit', '');
+	let hookurl = "https://hook.suk.kr/ab5ca3bf-9b63-468a-b2fe-c351013c02b0"
+	let htmlOutput = HtmlService.createHtmlOutput(
+		`<iframe src="${url}/pubhtml?widget=true&amp;headers=false" frameborder="0" style="width: 100%; height: fit-content;"></iframe><button onclick="window.open('${hookurl}/?url=${url}');">전자결재 상신하기</button>`
+	);
+	ui.showModelessDialog(htmlOutput, "전자결재 eSign");
 }
 
 const redirectToZioyou = () => {
 	let url = "https://www.zioyou.com/"; // 리디렉션할 URL
 	let htmlOutput = HtmlService.createHtmlOutput(
-		'<script>window.open("' + url + '", "_blank");</script>'
+		`<script>window.open("${url}", "_blank");</script>`
 	); // 리디렉션 스크립트
 	let response = ui.alert(
 		"이동하기",
