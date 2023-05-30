@@ -1,5 +1,8 @@
-# ziogle
+# ziogle 이란 ?
 Google Workspace Plus
+
+# 학생별 포인트 내역서
+https://docs.google.com/spreadsheets/d/e/2PACX-1vSk92NUZKRcmXlze23plrptK9zZBPdlq6nPBYkkihPgOf9fdBYeYmgLy6eX0eJEgbP9xBQJ8m-hsMEW/pubhtml?widget=true&amp;headers=false
 
 # 참조
 ## 구글 API 사용법, 키발급, oAuth인증 사용방법
