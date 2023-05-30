@@ -12,10 +12,10 @@ function onOpen() {
 function LoadDocs() {
   var url = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSk92NUZKRcmXlze23plrptK9zZBPdlq6nPBYkkihPgOf9fdBYeYmgLy6eX0eJEgbP9xBQJ8m-hsMEW/pubhtml?widget=true&amp;headers=false';
   
-  var html = '<iframe height="100%" width="100%" src="'+url+'"></iframe>';
+  var html = '<iframe height="800px" width="800px" src="'+url+'"></iframe>';
   var ui = HtmlService.createHtmlOutput(html)
       .setWidth(800)
-      .setHeight(500);
+      .setHeight(800);
   SpreadsheetApp.getUi().showModalDialog(ui, '팝업으로 전자결제를 상신합니다.');
 }
 
