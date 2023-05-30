@@ -24,7 +24,9 @@ function menuItem2() {
   myFunction();
 }
 
-function OpenZioYou(){
-  var htmlOutput = HtmlService.createHtmlOutputFromFile('openUrl').setHeight(100);
+function OpenZioYou() {
+  var html = '<html><body><a href="https://zioyoucs.com/" target="_blank">지오유로 이동</a></body></html>';
+  var htmlOutput = HtmlService.createHtmlOutput(html).setWidth(300).setHeight(100);
   SpreadsheetApp.getUi().showModalDialog(htmlOutput, 'Opening ZioYou');
-}
+  }
+  
