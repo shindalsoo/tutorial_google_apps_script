@@ -1,5 +1,5 @@
 # ziogle 이란 ?
-Google Workspace Plus
+ZioYou 협업서비스와 Google Workspace의 매시업(Mashup)
 
 # 학생별 포인트 내역서
 https://docs.google.com/spreadsheets/d/e/2PACX-1vSk92NUZKRcmXlze23plrptK9zZBPdlq6nPBYkkihPgOf9fdBYeYmgLy6eX0eJEgbP9xBQJ8m-hsMEW/pubhtml?widget=true&amp;headers=false
