@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<?!= include('js'); ?>
+	</head>
+	<body>
+		<h1>장애신고 콜센터</h1>
+		<form id="myForm" onsubmit="handleFormSubmit(this)">
+			고객명: <input type="text" name="username" /><br />
+			성별: <input type="text" name="gender" /><br />
+			연락처: <input type="text" name="tel" /><br />
+			불만사항: <input type="text" name="content" /><br />
+			<button type="submit">접수하기</button>
+		</form>
+	</body>
+</html>
