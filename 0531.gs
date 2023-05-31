@@ -1,5 +1,5 @@
 function onOpen() {
-  var ui = SpreadsheetApp.getUi();
+  let ui = SpreadsheetApp.getUi();
   ui.createMenu('지오유')
     .addItem('본 문서를 전자결재로 상신', 'LoadDocs')
     .addSeparator()
@@ -21,10 +21,10 @@ function LoadDocs() {
 
 function OpenZioyou() {
   // 열고자 하는 링크
-  var url = "http://www.zioyou.com";
+  let url = "http://www.zioyou.com";
 
-  var html = "<script>window.open('" + url + "','_blank');</script>";
-  var userInterface = HtmlService.createHtmlOutput(html);
+  let html = "<script>window.open('" + url + "','_blank');</script>";
+  let userInterface = HtmlService.createHtmlOutput(html);
 
   SpreadsheetApp.getUi().showModalDialog(userInterface, '지오유 홈페이지로 이동합니다.');
 }
