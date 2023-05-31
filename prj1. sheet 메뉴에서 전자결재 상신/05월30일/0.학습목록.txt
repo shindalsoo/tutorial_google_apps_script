@@ -12,8 +12,8 @@
     - 3.입력양식을 받아 sheet에 뿌리기.gs
 
 3. 관련기술 학습
-    - 서버2대 두팀으로 나누어 리눅스서버 만들기
     - RestAPI에 대하여
     	https://gmlwjd9405.github.io/2018/09/21/rest-and-restful.html
+    - 서버2대 두팀으로 나누어 리눅스서버 만들기
     
 숙제.
