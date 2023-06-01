@@ -13,15 +13,35 @@ const onOpen = () => {
 		.addToUi();
 }
 
+const formatDateTime = (date) => {
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+	const hours = date.getHours();
+	const minutes = date.getMinutes();
+	const seconds = date.getSeconds();
+	const weekday = ["일", "월", "화", "수", "목", "금", "토"][date.getDay()];
+
+	return `${year}.${month}.${day}.(${weekday}) ${hours}:${minutes}:${seconds}`;
+};
+
 const eSign = () => {
-	ui.alert("본 문서를 전자결재로 상신합니다.");
-	let url = doc.getUrl().replace('/edit', '');
-	let hookurl = "https://hook.suk.kr/ab5ca3bf-9b63-468a-b2fe-c351013c02b0"
-	let htmlOutput = HtmlService.createHtmlOutput(
-		`<iframe src="${url}/pubhtml?widget=true&amp;headers=false" frameborder="0" style="width: 100%; height: 800px;"></iframe><button onclick="window.open('${hookurl}/?url=${url}');">전자결재 상신하기</button>`
-	).setWidth(1000).setHeight(850);
+	// ui.alert("본 문서를 전자결재로 상신합니다.");
+	// let url = doc.getUrl().replace('/edit', '');
+	// let hookurl = "https://hook.suk.kr/ab5ca3bf-9b63-468a-b2fe-c351013c02b0"
+	// let htmlOutput = HtmlService.createHtmlOutput(
+	// 	`<iframe src="${url}/pubhtml?widget=true&amp;headers=false" frameborder="0" style="width: 100%; height: 800px;"></iframe><button onclick="window.open('${hookurl}/?url=${url}');">전자결재 상신하기</button>`
+	// ).setWidth(1000).setHeight(850);
+	let htmlOutput = HtmlService.createHtmlOutputFromFile('index').setWidth(1400).setHeight(700);
 	ui.showModelessDialog(htmlOutput, "전자결재 eSign");
-}
+};
+
+const eSignConfirm = () => {
+	let sheet = doc.getActiveSheet()
+	let now = new Date();
+
+	sheet.getRange('A1').setValue(`${formatDateTime(now)} 상신되었습니다.`)
+};
 
 const redirectToZioyou = () => {
 	let url = "https://www.zioyou.com/"; // 리디렉션할 URL
