@@ -1,0 +1,17 @@
+<script>
+	const preventFormSubmit = () => {
+		let forms = document.querySelectorAll("form");
+		for (let i = 0; i < forms.length; i++) {
+			forms[i].addEventListener("submit", (event) => {
+				event.preventDefault();
+			});
+		}
+	};
+
+	window.addEventListener("load", preventFormSubmit);
+
+	const handleFormSubmit = (formObject) => {
+		google.script.run.processForm(formObject);
+		document.getElementById("myForm").reset();
+	};
+</script>

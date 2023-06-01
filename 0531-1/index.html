@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<base target="_top" />
+		<style>
+			.ifm {
+				width: 100%;
+				height: 600px;
+			}
+		</style>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+		<script>
+			const eSignSend = () => {
+				Swal.fire({
+					icon: "question", // Alert 타입
+					title: "전자결재 상신", // Alert 제목
+					text: "승인하시겠습니까?", // Alert 내용
+					showCancelButton: true,
+					confirmButtonText: "승인",
+					cancelButtonText: "취소",
+				}).then((result) => {
+					if (result.isConfirmed) {
+						Swal.fire({
+							icon: "success", // Alert 타입
+							title: "성공했습니다.", // Alert 제목
+							text: "전자결재를 상신했습니다.", // Alert 내용
+						}).then(() => {
+							google.script.run.eSignConfirm();
+							google.script.host.close();
+						});
+					} else {
+						Swal.fire({
+							icon: "error", // Alert 타입
+							title: "취소했습니다.", // Alert 제목
+							text: "전자결재 페이지를 종료합니다.", // Alert 내용
+						}).then(() => {
+							google.script.host.close();
+						});
+					}
+				});
+			};
+		</script>
+	</head>
+	<body>
+		<h1>우리반 포인트 내역서</h1>
+
+		<iframe
+			class="ifm"
+			src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSk92NUZKRcmXlze23plrptK9zZBPdlq6nPBYkkihPgOf9fdBYeYmgLy6eX0eJEgbP9xBQJ8m-hsMEW/pubhtml?widget=true&amp;headers=false"
+		></iframe>
+		<button onclick="eSignSend()">전자결제 상신</button>
+	</body>
+</html>
