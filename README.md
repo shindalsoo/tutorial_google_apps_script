@@ -7,12 +7,12 @@ ZioYou 협업서비스와 Google Workspace간의 매시업(Mashup)
 본 과정을 통해 자신감을 얻고, 실제 운용가능한 작품도 팀 Play를 통해 만들어 봅시다.
 
 # 필요기술
-1. JavaScript, Css, HTML, Bootstrap
+1. JavaScript, Css, HTML, Bootstrap, Google Apps Script(.gs)
 2. RestAPI 활용 (Google API, ZioYou API)
-3. Linux서버 (Linux Ubuntu 20.04), Docker, Container
-4. Git
-5. 웹서버 (NginX, FastAPI)
-6. DB (PostgreSQL)
+4. Linux서버 (Linux Ubuntu 20.04), Docker, Container
+5. Git
+6. 웹서버 (NginX, FastAPI)
+7. DB (PostgreSQL)
 
 # 폴더설명
 prj1 : Google Sheet에서 전자결재 상신   
