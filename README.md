@@ -15,7 +15,8 @@ ZioYou 협업서비스와 Google Workspace간의 매시업(Mashup)
 6. DB (PostgreSQL)
 
 # 폴더설명
-ojt1 : Google Sheet에서 전자결재 상신
+prj1 : Google Sheet에서 전자결재 상신   
+prj2 : Google Drive에 있는 파일을 그룹웨어에 첨부하기
 
 # 관련사이트
 1. 지오유홈페이지: http://www.zioyou.com
