@@ -1,30 +1,28 @@
-function myFunction() {
-  
-}
+<!DOCTYPE html>
+<html>
 
-function onOpen() {
-  var ui = SpreadsheetApp.getUi();
-  // Or DocumentApp or FormApp.
-  ui.createMenu('지오유')
-      .addItem('본 문서를 전자결재로 상신', 'menuItem1')
-      .addSeparator()
-      .addSubMenu(ui.createMenu('바로가기')
-          .addItem('그룹웨어로 이동', 'menuItem2'))
-      .addToUi();
-}
+  <head>
+    <style>
+      .ifm{
+        width:100%;
+        height:360px;
+        border: 0;
+      }
+    </style>
 
-function menuItem1() {
-  SpreadsheetApp.getUi() // Or DocumentApp or FormApp.
-     .alert('You clicked the first menu item!');
-}
+    <script>
+      const fSend = () =>{
+        if (confirm('정말로 상신하겠습니까?')){
+          google.script.run.displayText();
+        }
+      }
+    </script>
+  </head>
 
-function menuItem2() {
-  SpreadsheetApp.getUi() // Or DocumentApp or FormApp.
-     .alert('You clicked the second menu item!');
-  myFunction();
-}
+  <body>
+    <iframe class="ifm" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSk92NUZKRcmXlze23plrptK9zZBPdlq6nPBYkkihPgOf9fdBYeYmgLy6eX0eJEgbP9xBQJ8m-hsMEW/pubhtml?widget=true&amp;headers=false"></iframe>
 
-function OpenZioYou(){
-  var htmlOutput = HtmlService.createHtmlOutputFromFile('openUrl').setHeight(100);
-  SpreadsheetApp.getUi().showModalDialog(htmlOutput, 'Opening ZioYou');
-}
+    <button onclick="fSend()">상신하기</button>
+  </body>
+
+</html>
