@@ -28,7 +28,7 @@ function OpenZioyou() {
   SpreadsheetApp.getUi().showModalDialog(userInterface, '지오유 홈페이지로 이동합니다.');
 }
 
-function processDocx() {
+function processDocs() {
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   let cell = sheet.getRange('A1');
   cell.setValue('성공하셨습니다.');
