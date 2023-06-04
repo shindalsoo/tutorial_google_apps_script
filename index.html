@@ -1,5 +1,25 @@
-<h1>우리반 포인트 내역서</h1>
-
-<iframe height="90%" width="100%"
-	src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSk92NUZKRcmXlze23plrptK9zZBPdlq6nPBYkkihPgOf9fdBYeYmgLy6eX0eJEgbP9xBQJ8m-hsMEW/pubhtml?widget=true&amp;headers=false"
-></iframe>
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      .ifm {
+        width: 100%;
+        height: 360px;
+        border: 0;
+      }
+    </style>
+    <script>
+      function fSend() {
+        if(confirm("정말로 상신하시겠습니까?")) {
+          alert("상신되었습니다. 고생하셨습니다.");
+          google.script.run.processDocx();
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <iframe class="ifm" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSk92NUZKRcmXlze23plrptK9zZBPdlq6nPBYkkihPgOf9fdBYeYmgLy6eX0eJEgbP9xBQJ8m-hsMEW/pubhtml?widget=true&amp;headers=false"></iframe>
+    <button onclick="fSend()">상신하기</button>
+  </body>
+</html>
