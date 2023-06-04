@@ -5,40 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <title>전자결재 상신하기</title>
-    <script>
-  function preventFormSubmit(){
-    var forms = document.querySelectorAll('form');
-    for (var i=0; i<forms.length; i++){
-      forms[i].addEventListener('submit',function(event){
-        event.preventDefault();
-      })
-    }
-  }
-
-  window.addEventListener('load',preventFormSubmit);
-
-  function handleFormSubmit(formObject){
-    google.script.run.processForm(formObject);
-    document.getElementById("frmMain").reset();
-  }
-</script>
+    <?!= include('javascript') ?>
+    <style>
+      .ifmBody{width:100%;height:280px;}
+    </style>
   </head>
   <body>
 
 <form id="frmMain" onsubmit="handleFormSubmit(this)">
   <div class="mb-3">
     <label for="txtSubject" class="form-label">문서제목</label>
-    <input type="text" class="form-control" id="txtSubject" aria-describedby="subjHelp">
+    <input type="text" class="form-control" id="txtSubject" aria-describedby="subjHelp" value="<?= subj ?>">
     <div id="subjHelp" class="form-text">전자결재로 상신할 문서의 제목을 입력하세요.</div>
   </div>
   <div class="mb-3">
-    <label for="txtErpUserID" class="form-label">상신자ID</label>
+    <label for="txtErpUserID" class="form-label">상신자계정</label>
     <input type="text" class="form-control" id="txtErpUserID" aria-describedby="uidHelp">
     <div id="uidHelp" class="form-text">그룹웨어 로그인계정 및 ERP 사용자ID를 입력하세요.</div>
   </div>
   <div class="mb-3 form-check">
     <input type="checkbox" class="form-check-input" id="exampleCheck1">
     <label class="form-check-label" for="exampleCheck1">기억하기</label>
+  </div>
+  <div class="mb-3">
+    <iframe class="ifmBody" src="<?= bodyhtml ?>"></iframe>
   </div>
   <button type="submit" class="btn btn-primary">보내기</button>
 </form>
