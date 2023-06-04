@@ -31,5 +31,5 @@ function OpenZioyou() {
 function processDocx() {
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   let cell = sheet.getRange('A1');
-  cell.setValue('수고하셨습니다');
+  cell.setValue('성공하셨습니다.');
 }
