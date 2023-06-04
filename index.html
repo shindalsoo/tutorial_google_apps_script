@@ -14,6 +14,8 @@
         if(confirm("정말로 상신하시겠습니까?")) {
           alert("상신되었습니다. 고생하셨습니다.");
           google.script.run.processDocx();
+        } else {
+          alert("상신이 취소되었습니다.");
         }
       }
     </script>
