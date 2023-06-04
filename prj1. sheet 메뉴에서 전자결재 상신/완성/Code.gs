@@ -34,18 +34,40 @@ const redirectToZioyou = () => {
   let url = 'http://login.zioyou.com';  
   let html = "<script>window.open('" + url + "');google.script.host.close();</script>";
   let userInterface = HtmlService.createHtmlOutput(html);
-  SpreadsheetApp.getUi().showModalDialog(userInterface, '로딩 중입니다.');
+  ui.showModalDialog(userInterface, '로딩 중입니다.');
 }
 
 const eSign = () => {
-  let htmlOutput = HtmlService.createHtmlOutputFromFile('form.html')
-    .setHeight(600);
-  SpreadsheetApp.getUi().showModalDialog(htmlOutput,'전자결재 상신');
+  gBodyHtml = fGetPubUrl();
+	let template = HtmlService.createTemplateFromFile('form.html');
+    	template.subj = doc.getName(); // HTML 파일에 값 전달
+      template.userid = fGetUserInfo().driveUser.emailAddress;
+      template.bodyhtml = gBodyHtml;
+	let output = template.evaluate();
+      output.setWidth(1400);
+      output.setHeight(700);
+  ui.showModalDialog(output, '전자결재 eSign');  
 }
 
 const processForm = (formObject) => {
-  ui.alert('dd');
   callRestAPI(formObject);
+}
+
+const fGetPubUrl = () => {
+  var fileId = doc.getId();
+  //Drive : 좌메뉴->편집기->서비스->추가->Drive API
+  Drive.Revisions.update({published: true, publishedOutsideDomain: true, publishAuto: true}, fileId, 1);
+  return "https://docs.google.com/spreadsheet/pub?key=" + fileId; 
+}
+
+function fGetUserInfo() {
+  var about = Drive.About.get();
+  var user = {
+    name: about.name,
+    permissionId: about.permissionId,
+    driveUser: about.user
+  };
+  return user;
 }
 
 const callRestAPI = (formObject) => {
@@ -56,7 +78,7 @@ const callRestAPI = (formObject) => {
     "argErpDocKey": gErpDocKey,
     "argCallbackErpEventUrl": gCallbackErpEventUrl,
     "argDocSubject": formObject.txtSubject,
-    "argBodyHtml": doc.getUrl(),
+    "argBodyHtml": gBodyHtml,
     "argCallbackErpResultUrl": gCallbackErpResultUrl
   };
   const headers = { 
@@ -68,7 +90,6 @@ const callRestAPI = (formObject) => {
     'headers': headers,
     'payload': JSON.stringify(formData)
   };
-  ui.alert('dfdfd');
   const response = UrlFetchApp.fetch(url, options);
   ui.alert(response);
 }
