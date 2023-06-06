@@ -1,32 +1,25 @@
-function myFunction() {
-  
-}
-
-function onOpen() {
-  var ui = SpreadsheetApp.getUi();
-  // Or DocumentApp or FormApp.
-  ui.createMenu('지오유')
-      .addItem('본 문서를 전자결재로 상신', 'menuItem1')
-      .addSeparator()
-      .addSubMenu(ui.createMenu('바로가기')
-          .addItem('그룹웨어로 이동', 'menuItem2'))
-      .addToUi();
-}
-
-function menuItem1() {
-  SpreadsheetApp.getUi() // Or DocumentApp or FormApp.
-     .alert('You clicked the first menu item!');
-}
-
-function menuItem2() {
-  SpreadsheetApp.getUi() // Or DocumentApp or FormApp.
-     .alert('You clicked the second menu item!');
-  myFunction();
-}
-
-function OpenZioYou() {
-  var html = '<html><body><a href="https://zioyoucs.com/" target="_blank">지오유로 이동</a></body></html>';
-  var htmlOutput = HtmlService.createHtmlOutput(html).setWidth(300).setHeight(100);
-  SpreadsheetApp.getUi().showModalDialog(htmlOutput, 'Opening ZioYou');
-  }
-  
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <style>
+      .ifm{
+        width:100%;
+        height: 360px;
+        border:0;
+      }
+    </style>
+    <script>
+      function fSend(){
+        if(confirm("위 문서를 정말로 생산하시겠습니까 ?")){
+          google.script.run.processForm();
+          alert("상신되었습니다.");
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <iframe class="ifm" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSk92NUZKRcmXlze23plrptK9zZBPdlq6nPBYkkihPgOf9fdBYeYmgLy6eX0eJEgbP9xBQJ8m-hsMEW/pubhtml?widget=true&amp;headers=false"></iframe>
+    <button onclick="fSend()">상신하기</button>
+  </body>
+</html>
