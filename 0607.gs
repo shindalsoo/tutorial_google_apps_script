@@ -1,9 +1,9 @@
 function myFunction() {
-  
+
 }
 
 function onOpen() {
-  var ui = SpreadsheetApp.getUi();
+  let ui = SpreadsheetApp.getUi();
   ui.createMenu('지오유')
     .addItem('본 문서를 전자결재로 상신', 'LoadDocs')
     .addSeparator()
@@ -14,7 +14,7 @@ function onOpen() {
 }
 
 function LoadDocs() {
-  var htmlOutput = HtmlService.createHtmlOutputFromFile('index.html').setHeight(400);
+  let htmlOutput = HtmlService.createHtmlOutputFromFile('index.html').setHeight(400);
   SpreadsheetApp.getUi().showModelessDialog(htmlOutput, '전자결제 상신');
 }
 
@@ -31,5 +31,10 @@ function OpenZioyou() {
 function processDocs() {
   let sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   let cell = sheet.getRange('A1');
-  cell.setValue('성공하셨습니다.');
+
+  let currentDate = new Date();
+  let formattedDate = Utilities.formatDate(currentDate, 'GMT+9', 'yy년 M월 d일 ');
+  let formattedTime = Utilities.formatDate(currentDate, 'GMT+9', 'HH:mm:ss');
+
+  cell.setValue(formattedDate + ' ' + formattedTime + '\n상신에 성공하였습니다.');
 }
