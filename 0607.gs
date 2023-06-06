@@ -14,7 +14,7 @@ function onOpen() {
 }
 
 function LoadDocs() {
-  let htmlOutput = HtmlService.createHtmlOutputFromFile('index.html').setHeight(400);
+  let htmlOutput = HtmlService.createHtmlOutputFromFile('index.html').setWidth(1000).setHeight(600);
   SpreadsheetApp.getUi().showModelessDialog(htmlOutput, '전자결제 상신');
 }
 
