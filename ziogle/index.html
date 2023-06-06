@@ -12,9 +12,7 @@
 
     <script>
       const fSend = () =>{
-        if (confirm('정말로 상신하겠습니까?')){
-          google.script.run.displayText();
-        }
+        google.script.run.alertMessage();
       }
     </script>
   </head>
