@@ -1,27 +1,208 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top">
-    <style>
-      .ifm {
-        width: 100%;
-        height: 360px;
-        border: 0;
+<head>
+  <style>
+    /* 일반 버튼 */
+    .normal-button {
+      display: block;
+      padding: 5px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      background-color: #6a6a6a;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .normal-button:hover {
+      background-color: #8c8c8c;
+    }
+    .normal-button:active {
+      background-color: #484848;
+    }
+
+
+    /* 확인(상신) 버튼 */
+    .check-button {
+      display: inline-block;
+      padding: 5px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      background-color: #6a6a6a;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .check-button:hover {
+      background-color: #00cdec;
+      color: #ffffff;
+    }
+    .check-button:active {
+      background-color: #00a6c0;
+      color: #ffffff;
+    }
+
+
+    /* 취소 버튼 */
+    .cancel-button {
+      display: inline-block;
+      padding: 5px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      text-decoration: none;
+      color: #000000;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .cancel-button:hover {
+      background-color: #f10000;
+      color: #ffffff;
+    }
+    .cancel-button:active {
+      background-color: #b80000;
+      color: #ffffff;
+    }
+
+
+    /* 창 */
+    .dialog-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    .dialog-box {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    .dialog-buttons {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+    .dialog-buttons button {
+      margin-left: 10px;
+      padding: 5px 10px;
+      border: none;
+      background-color: #ddd;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+
+    /* 페이드 인/아웃 */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
       }
-    </style>
-    <script>
-      function fSend() {
-        if(confirm("정말로 상신하시겠습니까?")) {
-          google.script.run.processDocs();
-          alert("상신되었습니다. 고생하셨습니다.");
-        } else {
-          alert("상신이 취소되었습니다.");
-        }
+      to {
+        opacity: 1;
       }
-    </script>
-  </head>
-  <body>
-    <iframe class="ifm" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSk92NUZKRcmXlze23plrptK9zZBPdlq6nPBYkkihPgOf9fdBYeYmgLy6eX0eJEgbP9xBQJ8m-hsMEW/pubhtml?widget=true&amp;headers=false"></iframe>
-    <button onclick="fSend()">상신하기</button>
-  </body>
+    }
+    .fadeIn {
+      animation: fadeIn 0.3s;
+    }
+
+    @keyframes fadeOut {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+    .fadeOut {
+      animation: fadeOut 0.3s;
+    }
+  </style>
+  <script>
+    // 창 열기
+    function openWindow(windowName) {
+      let dialog = document.getElementById(windowName);
+      dialog.style.display = 'flex';
+      dialog.classList.remove('fadeOut');
+    }
+
+    // 창 닫기
+    function closeWindow(windowName) {
+      let dialog = document.getElementById(windowName);
+      dialog.classList.add('fadeOut');
+      setTimeout(function() {
+        dialog.style.display = 'none';
+        dialog.classList.remove('fadeOut');
+      }, 300);
+    }
+
+    function confirmAction(choice) {
+      closeWindow('custom-confirm');
+      
+      if (choice) {
+        // 수락한 경우
+        google.script.run.processDocs();
+        openWindow('custom-confirm_sucess');
+      } else {
+        // 거절한 경우
+        openWindow('custom-confirm_cancel');
+      }
+    }
+  </script>
+</head>
+<body>
+  <h2>우리반 포인트 내역서</h2>
+  <iframe width="100%" height="280px"
+	src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSk92NUZKRcmXlze23plrptK9zZBPdlq6nPBYkkihPgOf9fdBYeYmgLy6eX0eJEgbP9xBQJ8m-hsMEW/pubhtml?widget=true&amp;headers=false"
+  ></iframe>
+  <button class="normal-button" onclick="openWindow('custom-confirm')">상신하기</button>
+
+  <!--상신 여부 창-->
+  <div id="custom-confirm" class="dialog-overlay">
+    <div class="dialog-box">
+      <p><strong>해당 문서를 상신하시겠습니까?</strong></p>
+      <div class="dialog-buttons">
+        <button class="check-button" onclick="confirmAction(true)">상신</button>
+        <button class="cancel-button" onclick="confirmAction(false)">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <!--상신 수락 창-->
+  <div id="custom-confirm_sucess" class="dialog-overlay">
+    <div class="dialog-box">
+      <p><strong>성공적으로 상신되었습니다.</strong></p>
+      <div class="dialog-buttons">
+        <button class="check-button" onclick="closeWindow('custom-confirm_sucess')">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!--상신 취소 창-->
+  <div id="custom-confirm_cancel" class="dialog-overlay">
+    <div class="dialog-box">
+      <p><strong>상신이 취소되었습니다.</strong></p>
+      <div class="dialog-buttons">
+        <button class="check-button" onclick="closeWindow('custom-confirm_cancel')">확인</button>
+      </div>
+    </div>
+  </div>
+</body>
 </html>
