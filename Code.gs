@@ -18,7 +18,7 @@ function sendDocument() {
 
 // "상신하기" 버튼 클릭 시 실행되는 함수
 function fSend() {
-  if (confirm("위 문서를 정말로 생산하시겠습니까?")) {
+  if (confirm("위 문서를 정말로 상신하시겠습니까?")) {
     google.script.run.processForm();
   }
 }
