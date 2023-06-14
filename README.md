@@ -1,14 +1,14 @@
 # 2023 웹 전공 방과후
 
-# 지오유 홈페이지
+## 지오유 홈페이지
 
 http://www.zioyou.com
 
-# ziogle
+## ziogle
 
 Google Workspace Plus
 
-# 참조
+## 참조
 
 ## 구글 API 사용법, 키발급, oAuth인증 사용방법
 
