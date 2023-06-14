@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<base target="_top" />
+		<?!= include('js'); ?>
+		<?!= include('css'); ?>
+	</head>
+	<body>
+		<form id="sendForm" onsubmit="eSignSend(this)">
+			<div class="form-group">
+				<label for="documentTitle">문서 제목:</label>
+				<input
+					type="text"
+					name="documentTitle"
+					placeholder="문서 제목을 입력하세요."
+					value="<?= docname ?>"
+				/>
+			</div>
+			<div class="form-group">
+				<label for="submitterId">상신자 ID:</label>
+				<input
+					type="text"
+					name="submitterId"
+					placeholder="상신자 ID를 입력하세요."
+					value="<?= email ?>"
+				/>
+			</div>
+			<div class="form-group">
+				<label for="documentContent">문서 내용:</label>
+				<iframe
+					class="ifm"
+					src="https://docs.google.com/spreadsheets/d/<?= docid ?>/pubhtml?widget=true&amp;headers=false"
+				></iframe>
+			</div>
+			<div class="form-group">
+				<label for="editPermissionToggle">편집 권한:</label>
+				<label class="switch">
+					<input name="writable" type="checkbox" />
+					<span class="slider round"></span>
+				</label>
+			</div>
+			<button type="submit">전자결제 상신</button>
+		</form>
+	</body>
+</html>

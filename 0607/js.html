@@ -1,0 +1,32 @@
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+	const eSignSend = (formObject) => {
+		Swal.fire({
+			icon: "question", // Alert 타입
+			title: "전자결재 상신", // Alert 제목
+			text: "승인하시겠습니까?", // Alert 내용
+			showCancelButton: true,
+			confirmButtonText: "승인",
+			cancelButtonText: "취소",
+		}).then((result) => {
+			if (result.isConfirmed) {
+				Swal.fire({
+					icon: "success", // Alert 타입
+					title: "요청했습니다.", // Alert 제목
+					text: "전자결재 상신을 요청했습니다.", // Alert 내용
+				}).then(() => {
+					google.script.run.eSignConfirm(formObject);
+					google.script.host.close();
+				});
+			} else {
+				Swal.fire({
+					icon: "error", // Alert 타입
+					title: "취소했습니다.", // Alert 제목
+					text: "전자결재 페이지를 종료합니다.", // Alert 내용
+				}).then(() => {
+					google.script.host.close();
+				});
+			}
+		});
+	};
+</script>
