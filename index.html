@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <style>
+      .ifm{
+        width:100%;
+        height: 360px;
+        border:0;
+      }
+    </style>
+  </head>
+  <body>
+<form>
+  <div class="mb-3">
+    <label for="txtSubmit" class="form-label">문서 제목</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="<?=sub1?>">
+    <div id="emailHelp" class="form-text">전자결재 문서제목을 반드시 입력하세요.</div>
+  </div>
+  <div class="mb-3">
+    <label for="exampleInputPassword1" class="form-label">상신자계정</label>
+    <input type="text" class="form-control" id="exampleInputPassword1" disabled value="<?=userid?>">
+  </div>
+  <button type="submit" class="btn btn-primary">상신하기</button>
+</form>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </body>
+</html>
