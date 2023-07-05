@@ -7,7 +7,7 @@
     <title>전자결재 상신하기</title>
     <?!= include('javascript') ?>
     <style>
-      .ifmBody{width:100%;height:280px;}
+      .ifmBody{width:100%;height:300px;}
     </style>
   </head>
   <body>
@@ -15,17 +15,11 @@
 <form id="frmMain" onsubmit="handleFormSubmit(this)">
   <div class="mb-3">
     <label for="txtSubject" class="form-label">문서제목</label>
-    <input type="text" class="form-control" id="txtSubject" aria-describedby="subjHelp" value="<?= subj ?>">
-    <div id="subjHelp" class="form-text">전자결재로 상신할 문서의 제목을 입력하세요.</div>
+    <input type="text" class="form-control" id="txtSubject" name="txtSubject" aria-describedby="subjHelp" value="<?= subj ?>">
   </div>
   <div class="mb-3">
     <label for="txtErpUserID" class="form-label">상신자계정</label>
-    <input type="text" class="form-control" id="txtErpUserID" aria-describedby="uidHelp">
-    <div id="uidHelp" class="form-text">그룹웨어 로그인계정 및 ERP 사용자ID를 입력하세요.</div>
-  </div>
-  <div class="mb-3 form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">기억하기</label>
+    <input type="text" class="form-control" id="txtErpUserID" name="txtErpUserID" aria-describedby="uidHelp" value="<?= userid ?>" disabled>
   </div>
   <div class="mb-3">
     <iframe class="ifmBody" src="<?= bodyhtml ?>"></iframe>
