@@ -63,9 +63,9 @@ const eSign = () => {
 };
 
 const eSigning = (payload) => {
-	let url = 'https://hook.suk.kr/ab5ca3bf-9b63-468a-b2fe-c351013c02b0'; // 요청을 보낼 URL
+	const url = 'https://dev.zioyou.com/mashup/workflow.create.document'; // 요청을 보낼 URL
 
-	let options = {
+	const options = {
 		method: 'post',
 		contentType: 'application/json',
 		payload: JSON.stringify(payload)
@@ -105,7 +105,7 @@ const eSignConfirm = (formObject) => {
 };
 
 const redirectToZioyou = () => {
-	let url = "https://www.zioyou.com/"; // 리디렉션할 URL
+	const url = "https://www.zioyou.com/"; // 리디렉션할 URL
 	let htmlOutput = HtmlService.createHtmlOutput(
 		`<script>window.open("${url}", "_blank");</script>`
 	); // 리디렉션 스크립트
