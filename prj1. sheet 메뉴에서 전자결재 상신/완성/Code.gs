@@ -1,27 +1,30 @@
 // 양식에 대한 고정값
-let gAuthKey="GJYfCPYgb65fKPQRIny9iVYfCPYgb65fKPQL||WWUtUd";
-let gFormNo=191146;
-let gCallbackErpResultUrl="callbackerpreturnurl?arg1={1}&arg2={2}&arg3={3}&arg4={4}";
-let gCallbackErpEventUrl="callbackerpeventurl?arg1={1}&arg2={2}&arg3={3}&arg4={4}";
+let gAuthKey = "GbYfCPydIC5fKP5fmx5wz8gXeEOXpzWWd0UJ";
+let gFormNo = "152521"; //문자열로
+let gCallbackErpResultUrl = encodeURIComponent("callbackerpreturnurl?arg1={1}&arg2={2}&arg3={3}&arg4={4}");
+let gCallbackErpEventUrl = encodeURIComponent("callbackerpeventurl?arg1={1}&arg2={2}&arg3={3}&arg4={4}");
 
 // 문서마다 입력 받을 값
-let gErpUserID="화면에서 입력받으세요.";
-let gDocSubject="화면에서 입력받으세요";
-let gErpDocKey="sheet고유의 ID를 자동으로 사용";
-let gBodyHtml="눈에 보고 있는 Sheet 문서 자체를 자동으로 사용";
+let gErpUserID = "접속한 사용자의 Email주소 사용";
+let gDocSubject = "화면에서 입력받으세요";
+let gErpDocKey = "sheet고유의 ID를 자동으로 사용";
+let gBodyHtml = "눈에 보고 있는 Sheet 문서 자체를 자동으로 사용";
 
 // sheet
 let ui = SpreadsheetApp.getUi();
 let doc = SpreadsheetApp.getActiveSpreadsheet();
+let scriptPrp = PropertiesService.getScriptProperties()
 
 const onOpen = () => {
 	ui.createMenu("지오유")
 		.addItem("본 문서를 전자결재로 상신", "eSign")
+		.addItem("본 문서를 게시방에 게시", "eSign1")
+		.addItem("본 문서를 프로젝트 WBS에 게시", "eSign2")
 		.addSeparator()
 		.addSubMenu(
 			ui
 				.createMenu("바로가기")
-				.addItem("그룹웨어로 이동", "redirectToZioyou")
+				.addItem("그룹웨어로 이동", "redirectToZioYou")
 		)
 		.addToUi();
 }
@@ -30,23 +33,36 @@ const include = (filename) => {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
-const redirectToZioyou = () => {
-  let url = 'http://login.zioyou.com';  
+const redirectToZioYou = () => {
+  let url = "http://login.zioyou.com";
   let html = "<script>window.open('" + url + "');google.script.host.close();</script>";
-  let userInterface = HtmlService.createHtmlOutput(html);
+  let userInterface = HtmlService.createHtmlOutput(html).setHeight(50).setWidth(200);
+  ui.showModalDialog(userInterface, '로딩 중입니다.');
+}
+const redirectToWorkFlow = (url) => {
+  let html = "<script>window.open('" + url + "');google.script.host.close();</script>";
+  let userInterface = HtmlService.createHtmlOutput(html).setHeight(50).setWidth(200);
   ui.showModalDialog(userInterface, '로딩 중입니다.');
 }
 
 const eSign = () => {
+  gErpUserID = fGetUserInfo().driveUser.emailAddress;
   gBodyHtml = fGetPubUrl();
+  gErpDocKey = doc.getId();
+
+  scriptPrp.setProperty('gErpUserID', gErpUserID);
+  scriptPrp.setProperty('gBodyHtml', gBodyHtml);
+  scriptPrp.setProperty('gErpDocKey', gErpDocKey);
+
 	let template = HtmlService.createTemplateFromFile('form.html');
     	template.subj = doc.getName(); // HTML 파일에 값 전달
-      template.userid = fGetUserInfo().driveUser.emailAddress;
+      template.userid = fGetUserInfo().driveUser.emailAddress; //가능
+      template.userid = Session.getActiveUser().getEmail(); //가능
       template.bodyhtml = gBodyHtml;
 	let output = template.evaluate();
       output.setWidth(1400);
-      output.setHeight(700);
-  ui.showModalDialog(output, '전자결재 eSign');  
+      output.setHeight(600);
+  ui.showModalDialog(output, '전자결재 상신하기');  
 }
 
 const processForm = (formObject) => {
@@ -73,12 +89,12 @@ function fGetUserInfo() {
 const callRestAPI = (formObject) => {
   const url = 'https://dev.zioyou.com/mashup/workflow.create.document';
   const formData = {
-    "argErpUserID": formObject.txtErpUserID,
+    "argErpUserID": scriptPrp.getProperty('gErpUserID'),
     "argFormNo": gFormNo,
-    "argErpDocKey": gErpDocKey,
+    "argErpDocKey": scriptPrp.getProperty('gErpDocKey'),
     "argCallbackErpEventUrl": gCallbackErpEventUrl,
     "argDocSubject": formObject.txtSubject,
-    "argBodyHtml": gBodyHtml,
+    "argBodyHtml": encodeURIComponent(scriptPrp.getProperty('gBodyHtml')),
     "argCallbackErpResultUrl": gCallbackErpResultUrl
   };
   const headers = { 
@@ -86,10 +102,12 @@ const callRestAPI = (formObject) => {
     };
   const options = { 
     'method' : 'post',
-    'contentType': 'application/x-www-form-urlencoded',
+    'contentType': 'application/x-www-form-urlencoded', //application/json
     'headers': headers,
-    'payload': JSON.stringify(formData)
+    'payload': formData //JSON.stringify(formData)
   };
-  const response = UrlFetchApp.fetch(url, options);
-  ui.alert(response);
+  //ui.alert(JSON.stringify(formData));
+  let response = UrlFetchApp.fetch(url, options);
+  let data = JSON.parse(response.getContentText());
+  redirectToWorkFlow(data.result);
 }
