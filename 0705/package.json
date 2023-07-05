@@ -1,0 +1,15 @@
+{
+	"name": "drive-api-quickstart",
+	"version": "1.0",
+	"description": "Express server with EJS template engine",
+	"main": "app.js",
+	"scripts": {
+		"start": "nodemon app.js"
+	},
+	"dependencies": {
+		"dotenv": "^16.3.1",
+		"ejs": "^3.1.9",
+		"express": "^4.18.2",
+		"http-server": "^14.1.1"
+	}
+}
