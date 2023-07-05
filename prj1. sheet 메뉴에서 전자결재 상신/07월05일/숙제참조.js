@@ -41,3 +41,22 @@ try {
 } catch (err) {
   console.error(err);
 }
+
+//특정cell값을 업데이트
+//SCOPES에 추가 https://www.googleapis.com/auth/spreadsheets
+return gapi.client.sheets.spreadsheets.values.update({
+        "spreadsheetId": sid,
+        "range": sheetName + "!A2:D",
+        "includeValuesInResponse": "true",
+        "responseDateTimeRenderOption": "FORMATTED_STRING",
+        "responseValueRenderOption": "FORMATTED_VALUE",
+        "valueInputOption": "USER_ENTERED",
+        "resource": {
+          "majorDimension": "ROWS",
+          "range": sheetName + "!A2:D",
+          "values": [['data1', 'data2', 'data3', 'data4']]
+        }
+      }).then(function(response) {
+       console.log(response);
+      
+      }, function(err) { console.error("Execute error", err); });
