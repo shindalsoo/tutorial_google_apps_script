@@ -163,8 +163,29 @@
             });
             request.execute(function(resp){
                 alert('Copy ID:' + resp.id);
+                rename(resp.id);
                 location.href = "https://docs.google.com/spreadsheets/d/"+resp.id+"/edit#gid=0";
             });
+        }
+        function rename(sid){
+            gapi.client.sheets.spreadsheets.values.update({
+                spreadsheetId: sid,
+                range: "시트1!A1",
+                valueInputOption: "USER_ENTERED",
+                resource: {
+                    values: [["dddd"]],
+                },
+            }).then(
+                (response) => {
+                    console.log("셀이 업데이트되었습니다.");
+                },
+                (error) => {
+                    console.error(
+                        "셀 업데이트 중 오류가 발생했습니다.",
+                        error.result.error.message
+                    );
+                }
+            );
         }
     </script>
   </body>
