@@ -1,0 +1,29 @@
+0. PR(Pull Request) 검증
+	0-1. 지난 2주간 강의가 없는 날이라 이번 PR 검증은 건너뜁니다.
+    0-2. 대신, 포인트 중간정산이 있습니다.
+
+1. ziogle Project1 리뷰
+	- 목표시스템 공유
+
+2. 단위 샘플 실습
+    - 1.지오유 API 소개
+    - 2.ZioYou RestAPI 호출하고 응답받아 상신화면 띄우기
+    - nodejs 다운로드 및 설치
+        - node -v
+        - npm -v
+        - npm install http-server
+        - npx http-server -p 8000
+    목표
+        - 양식등록하고, 등록한 양식으로 신규문서 작성하기
+
+3. 관련기술 학습
+    - RestAPI에 대하여
+    	https://gmlwjd9405.github.io/2018/09/21/rest-and-restful.html
+    
+숙제.
+    - 숙제1. 
+        1) 제목을 입력받아
+        2) 그 제목으로 빈 구글 SpreadSheet 파일 만들고
+        3) 그 SpreadSheet 열어, A행3열 위치에 제목을 넣어
+        4) 새창으로 SpreadSheet 열기
+
