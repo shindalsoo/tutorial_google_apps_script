@@ -1,0 +1,300 @@
+<!-- npx http-server -p 8000 -->
+<!-- confilm: https://www.cssscript.com/alert-confirm-toast-cute/ -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Drive API Quickstart</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="cute-alert-master\style.css" />
+    <script src="cute-alert-master\cute-alert.js"></script>
+    <style>
+      input {
+        border-radius:10px;
+        padding:10px;
+      }
+      button {
+        transition: 0.2s;
+        background-color:#525252;
+        color: #fff;
+        border:none;
+        border-radius:10px;
+        padding:10px;
+      }
+      button:hover {
+        background-color:#000000;
+        transition: 0.2s;
+      }
+    </style>
+  </head>
+    <body>
+    <h1 style="border-radius: 10px; background-color: #4d4d4d; color: #ffffff; text-align: center">전자결재 상신</h1>
+
+    <!--Add buttons to initiate auth sequence and sign out-->
+    
+    <button id="authorize_button" onclick="handleAuthClick()">로그인</button>
+    <button id="signout_button" onclick="handleSignoutClick()">로그아웃</button><br><br>
+    
+    <input type="text" id="txtNewFileName" value="" placeholder="파일명을 입력하세요."><br>
+    <button onclick="create()" id="txtNewFileNameBUTTON">새로운 파일 생성하기</button>
+
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
+    <script type="text/javascript">
+      /* exported gapiLoaded */
+      /* exported gisLoaded */
+      /* exported handleAuthClick */
+      /* exported handleSignoutClick */
+
+      // TODO(developer): Set to client ID and API key from the Developer Console
+      const CLIENT_ID = '459926042999-uqcnefk6im5i5ab77400l2g3737prnch.apps.googleusercontent.com';
+      const API_KEY = 'AIzaSyDPtILSd9By0H29o0T4fzCfyWA5hHXWM8k';
+
+      // Discovery doc URL for APIs used by the quickstart
+      const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';
+
+      // Authorization scopes required by the API; multiple scopes can be
+      // included, separated by spaces.
+      const SCOPES = [
+        'https://www.googleapis.com/auth/drive',
+        'https://www.googleapis.com/auth/drive.metadata.readonly',
+      ];
+
+      let tokenClient;
+      let gapiInited = false;
+      let gisInited = false;
+
+      document.getElementById('authorize_button').style.visibility = 'hidden';
+      document.getElementById('signout_button').style.visibility = 'hidden';
+      document.getElementById('txtNewFileName').style.visibility = 'hidden';
+      document.getElementById('txtNewFileNameBUTTON').style.visibility = 'hidden';
+
+      /**
+       * Callback after api.js is loaded.
+       */
+      function gapiLoaded() {
+        console.log('gapiLoaded');
+        gapi.load('client', initializeGapiClient);
+      }
+
+      /**
+       * Callback after the API client is loaded. Loads the
+       * discovery doc to initialize the API.
+       */
+      async function initializeGapiClient() {
+        console.log('initializeGapiClient');
+        await gapi.client.init({
+          apiKey: API_KEY,
+          discoveryDocs: [DISCOVERY_DOC],
+        });
+        gapiInited = true;
+        maybeEnableButtons();
+      }
+
+      /**
+       * Callback after Google Identity Services are loaded.
+       */
+      function gisLoaded() {
+        console.log('gisLoaded');
+        tokenClient = google.accounts.oauth2.initTokenClient({
+          client_id: CLIENT_ID,
+          scope: SCOPES.join(' '),
+          callback: '', // defined later
+        });
+        gisInited = true;
+        maybeEnableButtons();
+      }
+
+      /**
+       * Enables user interaction after all libraries are loaded
+       */
+      function maybeEnableButtons() {
+        console.log('maybeEnableButtons');
+        if (gapiInited && gisInited) {
+          cuteToast({
+            title: "",
+            type: "warning", // or 'info', 'error', 'warning'
+            message: "로그인 후 이용하세요",
+            timer: 3000
+          })
+          document.getElementById('authorize_button').style.visibility = 'visible';
+          document.getElementById('txtNewFileName').style.visibility = 'hidden';
+          document.getElementById('txtNewFileNameBUTTON').style.visibility = 'hidden';
+        }
+      }
+
+      /**
+       *  Sign in the user upon button click.
+       */
+      function handleAuthClick() {
+        console.log('handleAuthClick');
+        tokenClient.callback = async (resp) => {
+          console.log('handleAuthClick_callback');
+          if (resp.error !== undefined) {
+            console.log('handleAuthClick_callback_if');
+            throw (resp);
+          }
+          document.getElementById('signout_button').style.visibility = 'visible';
+          document.getElementById('txtNewFileName').style.visibility = 'visible';
+          document.getElementById('txtNewFileNameBUTTON').style.visibility = 'visible';
+          document.getElementById('authorize_button').innerText = '새로고침';
+          
+          cuteToast({
+            title: "",
+            type: "success", // or 'info', 'error', 'warning'
+            message: "로그인 되었습니다.",
+            timer: 3000
+          })
+
+          document.getElementById('txtNewFileName').value = '';
+
+          await listFiles();
+        };
+
+        if (gapi.client.getToken() === null) {
+          // Prompt the user to select a Google Account and ask for consent to share their data
+          // when establishing a new session.
+          console.log('handleAuthClick_getToken_if');
+          tokenClient.requestAccessToken({prompt: 'consent'});
+        } else {
+          // Skip display of account chooser and consent dialog for an existing session.
+          console.log('handleAuthClick_getToken_else');
+          tokenClient.requestAccessToken({prompt: ''});
+        }
+      }
+
+      /**
+       *  Sign out the user upon button click.
+       */
+      function handleSignoutClick() {
+        console.log('handleSignoutClick');
+        const token = gapi.client.getToken();
+        if (token !== null) {
+          google.accounts.oauth2.revoke(token.access_token);
+          gapi.client.setToken('');
+          document.getElementById('content').innerText = '';
+          document.getElementById('authorize_button').innerText = '로그인';
+          document.getElementById('signout_button').style.visibility = 'hidden';
+          document.getElementById('txtNewFileName').style.visibility = 'hidden';
+          document.getElementById('txtNewFileNameBUTTON').style.visibility = 'hidden';
+          
+          cuteToast({
+            title: "",
+            type: "error", // or 'info', 'error', 'warning'
+            message: "로그아웃 되었습니다.",
+            timer: 3000
+          })
+        }
+      }
+      
+      
+
+      /**
+       * Print metadata for first 10 files.
+       */
+      async function listFiles() {
+        console.log('listFiles')
+        let response;
+        try {
+          response = await gapi.client.drive.files.list({
+            'pageSize': 30,
+            'fields': 'files(id, name)',
+          });
+        } catch (err) {
+          document.getElementById('content').innerText = err.message;
+          return;
+        }
+        const files = response.result.files;
+        if (!files || files.length == 0) {
+          document.getElementById('content').innerText = '저장된 파일을 찾지 못했습니다.';
+          return;
+        }
+        // Flatten to string to display
+        const output = files.reduce(
+            (str, file) => `${str}${file.name} (${file.id})\n`,
+            'Files:\n');
+        document.getElementById('content').innerText = output;
+      }
+    </script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+    <script>
+      function create() {
+        let fileId = "1zGrPLonfINeV6cii1kPIEr5uCqEl7H9YkPdqmUKsdbI";
+        let txtNewFileName = document.getElementById("txtNewFileName").value;
+
+        if(txtNewFileName=='') {
+          cuteAlert({
+            type: "error",
+            title: "오류",
+            message: "파일명을 꼭 입력해주세요",
+            buttonText: "알겠습니다..!"
+          })
+          return;
+        }
+
+        copyFile(fileId, txtNewFileName);
+      }
+
+      function copyFile(originId, copyTitle) {
+        console.log('copyFile');
+        const confirm_txt = '['+copyTitle +']<br>'+'위 제목으로 파일을 만드시겠습니까?'
+
+        cuteAlert({
+          type: "question",
+          title: "파일 생성",
+          message: "confirm_txt",
+          confirmText: "만들기",
+          cancelText: "취소"
+        }).then((e)=>{
+          if ( e == ("Thanks")){
+            alert("성공");
+        } else {
+            alert("취소");
+          }
+        })
+
+        cuteAlert({
+          type: "question",
+          title: "파일 생성",
+          message: confirm_txt,
+          confirmText: "만들기",
+          cancelText: "취소"
+        }).then((e)=>{
+          console.log("newFileConfirm_"+e);
+          if ( e == ("confirm")){
+            // 예
+            let body = {
+              'title': copyTitle,
+              'name': copyTitle
+            }
+            let requese = gapi.client.drive.files.copy({
+              'fileId': originId,
+              'resource': body
+            });
+            requese.execute(function(resp){
+              window.open('https://docs.google.com/spreadsheets/d/' + resp.id + '/edit#gid=0');
+            })
+            
+            document.getElementById('txtNewFileName').value = '';
+
+            cuteAlert({
+              type: "success",
+              title: "성공",
+              message: "성공적으로 파일을 생성하였습니다.<br>파일로 이동합니다.",
+              buttonText: "확인"
+            })
+          } else {
+            // 아니오
+            cuteAlert({
+              type: "error",
+              title: "취소됨",
+              message: "파일 생성이 취소되었습니다.",
+              buttonText: "확인"
+            });
+          }
+        })
+        
+      }
+    </script>
+  </body>
+</html>
