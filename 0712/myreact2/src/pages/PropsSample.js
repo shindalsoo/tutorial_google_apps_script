@@ -16,6 +16,7 @@ function Nav(props) {
     for (let i = 0; i < props.menus.length; i++) {
         lis.push(<li>{props.menus[i].title},{props.menus[i].body}</li>)
     }
+    
     return (
         <>
             <h1>{props.title}</h1>
