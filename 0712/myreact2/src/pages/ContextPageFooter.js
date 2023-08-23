@@ -2,16 +2,19 @@ import React, { useContext } from "react";
 import { ThemeContext } from "./ThemeContext";
 
 const ContextPageFooter = () => {
-    const { isDark , setIsDark } = useContext(ThemeContext);
+    const { darkTheme } = useContext(ThemeContext);
+
+    
 
     const toggleTheme = () => {
-        setIsDark();
+        darkTheme.setIsDark();
+        console.log(darkTheme.isDark);
     }
 
     return (
         <footer className="footer"
             style={{
-                backgroundColor: isDark ? "black" : "white",
+                backgroundColor: darkTheme.isDark ? 'black' : 'white',
             }}>
 
             <button className="button" onClick={toggleTheme}>

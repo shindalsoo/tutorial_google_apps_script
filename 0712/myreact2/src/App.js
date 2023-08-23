@@ -9,16 +9,19 @@ import Input from './pages/Input';
 import List from './pages/List';
 import PropsSample from './pages/PropsSample';
 import ContextPage from './pages/ContextPage';
+import ReducerSimple from './pages/ReducerSimple';
+import Attendance from './pages/Attendance';
 // import { useState } from 'react';
 
 function App() {
   // const [isDark, setIsDark] = useState(false);
 
-  let isDark = false;
-
-  const setIsDark = () => {
-    isDark = !isDark;
-  }
+  const darkTheme = {
+    isDark: false,
+    setIsDark: function () {
+      return this.isDark = !this.isDark;
+    },
+  };
 
   const user = "호성";
 
@@ -26,7 +29,7 @@ function App() {
     <div className='App'>
 
       <nav className='nav'>
-        <Link to="/">Home</Link> | <Link to="/about">About</Link> | <Link to="/counter">Counter</Link> | <Link to="/input">Input</Link> | <Link to="/list">List</Link> | <Link to="props">PropsSample</Link> | <Link to="context">ContextPage</Link>
+        <Link to="/">Home</Link> | <Link to="/about">About</Link> | <Link to="/counter">Counter</Link> | <Link to="/input">Input</Link> | <Link to="/list">List</Link> | <Link to="props">PropsSample</Link> | <Link to="contextPage">ContextPage</Link> | <Link to="/reducerSimple">ReducerSimple</Link> | <Link to="/attendance">Attendance</Link>
       </nav>
 
       <Routes>
@@ -36,14 +39,16 @@ function App() {
         <Route path='/input' element={<Input />}></Route>
         <Route path='/list' element={<List />}></Route>
         <Route path='/props' element={<PropsSample />}></Route>
-        <Route path='/context' element={
+        <Route path='/contextPage' element={
           <UserContext.Provider value={user}>
-            <ThemeContext.Provider value={{ isDark , setIsDark }}>
+            <ThemeContext.Provider value={{ darkTheme }}>
               <ContextPage />
             </ThemeContext.Provider>
           </UserContext.Provider>
         }>
         </Route>
+        <Route path='/reducerSimple' element={<ReducerSimple />}></Route>
+        <Route path='/attendance' element={<Attendance />}></Route>
       </Routes>
 
     </div>

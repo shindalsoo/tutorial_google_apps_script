@@ -3,14 +3,14 @@ import { ThemeContext } from "./ThemeContext";
 import { UserContext } from "./UserContext";
 
 const ContextPageHeader = () => {
-    const { isDark } = useContext(ThemeContext);
+    const { darkTheme } = useContext(ThemeContext);
     const user = useContext(UserContext);
 
     return (
         <header className="header"
             style={{
-                backgroundColor: isDark ? "black" : "white",
-                color: isDark ? "white" : "black",
+                backgroundColor: darkTheme.isDark ? "black" : "white",
+                color: darkTheme.isDark ? "white" : "black",
             }}>
             <h1>환영합니다. {user}님</h1>
         </header>
