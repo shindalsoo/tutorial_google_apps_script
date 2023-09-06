@@ -1,6 +1,11 @@
 /* .App {
   text-align: center;
 } */
+#conteiner,
+#conteiner div{
+  border: 5px solid red;
+  margin: 10px;
+}
 
 .nav{
   text-align: center;

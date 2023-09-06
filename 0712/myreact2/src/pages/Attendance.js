@@ -8,18 +8,28 @@ const reducer = (state, action) => {
             const newStudent = {
                 id: Date.now(),
                 name, //key == value 면 value 생략
-                isHere: false,
+                isHere: false
             };
             return {
                 count: state.count + 1,
-                students: [...state.students, newStudent],
+                students: [...state.students, newStudent]
             }
         case 'delete-student':
             return {
                 count: state.count - 1,
                 students: state.students.filter(
                     (student) => student.id !== action.payload.id
-                ),
+                )
+            }
+        case 'mark-student':
+            return {
+                count: state.count,
+                students: state.students.map((student) => {
+                    if (student.id === action.payload.id) {
+                        return { ...student, isHere: !student.isHere }
+                    }
+                    return student;
+                })
             }
         default:
             return state;
@@ -28,7 +38,7 @@ const reducer = (state, action) => {
 
 const initialState = {
     count: 0,
-    students: [],
+    students: []
 }
 
 const Attendance = () => {
@@ -50,6 +60,7 @@ const Attendance = () => {
 
             <button onClick={() => {
                 dispatch({ type: 'add-student', payload: { name } })
+                setName("");
             }}>추가</button>
 
             {studentInfo.students.map((student) => {
@@ -59,6 +70,7 @@ const Attendance = () => {
                             dispatch={dispatch}
                             name={student.name}
                             id={student.id}
+                            isHere={student.isHere}
                         />
                     </div>
                 )
